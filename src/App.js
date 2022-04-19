@@ -1,13 +1,16 @@
 import React from 'react';
 import Router from './router';
 import {NavigationContainer} from '@react-navigation/native';
-//import 'react-native-gesture-handler';
+import FlashMessage from 'react-native-flash-message';
 
 const App = () => {
   return (
-    <NavigationContainer>
-      <Router />
-    </NavigationContainer>
+    <>
+      <NavigationContainer>
+        <Router />
+      </NavigationContainer>
+      <FlashMessage position="top" />
+    </>
   );
 };
 
