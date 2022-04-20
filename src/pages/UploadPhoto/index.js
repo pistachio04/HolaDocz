@@ -6,17 +6,27 @@ import {colors, fonts} from '../../utils';
 //import {NavigationContainer} from '@react-navigation/native';
 // import {launchImageLibrary} from 'react-native-image-picker';
 import * as ImagePicker from 'react-native-image-picker';
+import {showMessage} from 'react-native-flash-message';
 
-const UploadPhoto = ({navigation}) => {
+const UploadPhoto = ({navigation, route}) => {
+  const {fullName, profession} = route.params;
   const [hasPhoto, setHasPhoto] = useState(false);
   const [photo, setPhoto] = useState(ILNullPhoto);
   const getImage = () => {
     ImagePicker.launchImageLibrary({includeBase64: true}, response => {
       console.log('response: ', response);
-
-      const source = {uri: response.assets[0].uri};
-      setPhoto(source);
-      setHasPhoto(true);
+      if (response.didCancel || response.error) {
+        showMessage({
+          message: 'Oops, sepertinya anda tidak memilih fotonya?',
+          type: 'default',
+          backgroundColor: colors.error,
+          color: colors.white,
+        });
+      } else {
+        const source = {uri: response.assets[0].uri};
+        setPhoto(source);
+        setHasPhoto(true);
+      }
     });
   };
   return (
@@ -29,8 +39,8 @@ const UploadPhoto = ({navigation}) => {
             {hasPhoto && <IconRemovePhoto style={styles.addPhoto} />}
             {!hasPhoto && <IconAddPhoto style={styles.addPhoto} />}
           </TouchableOpacity>
-          <Text style={styles.name}>M. Sigid Prasetyo</Text>
-          <Text style={styles.profession}>Mobile Developer</Text>
+          <Text style={styles.name}>{fullName}</Text>
+          <Text style={styles.profession}>{profession}</Text>
         </View>
         <View>
           <Button
