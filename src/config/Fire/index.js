@@ -1,3 +1,21 @@
+import {initializeApp} from 'firebase/app';
+
+// TODO: Replace the following with your app's Firebase project configuration
+// See: https://firebase.google.com/docs/web/learn-more#config-object
+const firebaseConfig = {
+  apiKey: 'AIzaSyDh2hHOqsS-t73nDl3WGjPJV2_hhrYAl8s',
+  authDomain: 'holadoc4.firebaseapp.com',
+  databaseURL: 'https://holadoc4-default-rtdb.firebaseio.com',
+  projectId: 'holadoc4',
+  storageBucket: 'holadoc4.appspot.com',
+  messagingSenderId: '392023683255',
+  appId: '1:392023683255:web:3545ad9ba56c5d0b5b5d32',
+};
+
+const Fire = initializeApp(firebaseConfig);
+
+export default Fire;
+
 // import firebase from 'firebase';
 // // import 'firebase/database';
 // // import {initializeApp} from 'firebase/app';
@@ -24,26 +42,10 @@
 
 // import firebase from 'firebase';
 // import 'firebase/database';
-import {initializeApp} from 'firebase/app';
+
 // import * as firebase from 'firebase';
 // import firebase from 'firebase/app';
 // import 'firebase/auth';
-
-// TODO: Replace the following with your app's Firebase project configuration
-// See: https://firebase.google.com/docs/web/learn-more#config-object
-const firebaseConfig = {
-  apiKey: 'AIzaSyDh2hHOqsS-t73nDl3WGjPJV2_hhrYAl8s',
-  authDomain: 'holadoc4.firebaseapp.com',
-  databaseURL: 'https://holadoc4-default-rtdb.firebaseio.com',
-  projectId: 'holadoc4',
-  storageBucket: 'holadoc4.appspot.com',
-  messagingSenderId: '392023683255',
-  appId: '1:392023683255:web:3545ad9ba56c5d0b5b5d32',
-};
-
-const Fire = initializeApp(firebaseConfig);
-
-export default Fire;
 
 // firebase.initializeApp({
 //   apiKey: 'AIzaSyCl3fWuzuQjf0cj9ACL7UF8Rc0PZrcdgj0',
