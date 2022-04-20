@@ -1,28 +1,40 @@
-import {StyleSheet, Text, View, Image} from 'react-native';
+import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
 import {Button, Gap, Header, Link} from '../../components';
 import {IconAddPhoto, IconRemovePhoto, ILNullPhoto} from '../../assets';
 import {colors, fonts} from '../../utils';
 //import {NavigationContainer} from '@react-navigation/native';
+// import {launchImageLibrary} from 'react-native-image-picker';
+import * as ImagePicker from 'react-native-image-picker';
 
 const UploadPhoto = ({navigation}) => {
   const [hasPhoto, setHasPhoto] = useState(false);
+  const [photo, setPhoto] = useState(ILNullPhoto);
+  const getImage = () => {
+    ImagePicker.launchImageLibrary({includeBase64: true}, response => {
+      console.log('response: ', response);
+
+      const source = {uri: response.assets[0].uri};
+      setPhoto(source);
+      setHasPhoto(true);
+    });
+  };
   return (
     <View style={styles.page}>
       <Header title="Upload Photo" />
       <View style={styles.content}>
         <View style={styles.profile}>
-          <View style={styles.avatarWrapper}>
-            <Image source={ILNullPhoto} style={styles.avatar} />
+          <TouchableOpacity style={styles.avatarWrapper} onPress={getImage}>
+            <Image source={photo} style={styles.avatar} />
             {hasPhoto && <IconRemovePhoto style={styles.addPhoto} />}
             {!hasPhoto && <IconAddPhoto style={styles.addPhoto} />}
-          </View>
+          </TouchableOpacity>
           <Text style={styles.name}>M. Sigid Prasetyo</Text>
           <Text style={styles.profession}>Mobile Developer</Text>
         </View>
         <View>
           <Button
-            disable
+            disable={!hasPhoto}
             title="Upload and Continue"
             onPress={() => navigation.replace('MainApp')}
           />
@@ -45,6 +57,7 @@ const styles = StyleSheet.create({
   avatar: {
     height: 110,
     width: 110,
+    borderRadius: 110 / 2,
   },
   addPhoto: {
     position: 'absolute',
