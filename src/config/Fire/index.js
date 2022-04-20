@@ -22,7 +22,7 @@
 
 // export default Fire;
 
-import firebase from 'firebase';
+// import firebase from 'firebase';
 // import 'firebase/database';
 import {initializeApp} from 'firebase/app';
 // import * as firebase from 'firebase';

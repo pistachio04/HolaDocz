@@ -27,9 +27,9 @@ const Register = ({navigation}) => {
 
         //menyimpan ke db firebase
         const data = {
-          fullName: '',
-          profession: '',
-          email: '',
+          fullName: form.fullName,
+          profession: form.profession,
+          email: form.email,
         };
 
         Fire.database()
