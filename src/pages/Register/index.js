@@ -24,6 +24,17 @@ const Register = ({navigation}) => {
       .then(success => {
         setLoading(false);
         setForm('reset');
+
+        //menyimpan ke db firebase
+        const data = {
+          fullName: '',
+          profession: '',
+          email: '',
+        };
+
+        Fire.database()
+          .ref('users/' + success.user.uid + '/')
+          .set(data);
         console.log('sukses registrasi: ', success);
       })
       .catch(error => {
