@@ -9,7 +9,7 @@ import {showMessage} from 'react-native-flash-message';
 const Login = ({navigation}) => {
   const [form, setForm] = useForm({email: '', password: ''});
   const [loading, setLoading] = useState(false);
-
+  // Proses Login Firebase
   const login = () => {
     console.log('form: ', form);
     setLoading(true);

@@ -2,11 +2,23 @@ import {StyleSheet, Text, View} from 'react-native';
 import React, {useEffect} from 'react';
 import {ILLogo} from '../../assets';
 import {colors, fonts} from '../../utils';
+import {Fire} from '../../config';
 
 const Splash = ({navigation}) => {
   useEffect(() => {
     setTimeout(() => {
-      navigation.replace('GetStarted');
+      //Login Session
+      Fire.auth().onAuthStateChanged(user => {
+        if (user) {
+          //user masih login
+          console.log('user: ', user);
+          navigation.replace('MainApp');
+        } else {
+          //user sudah logout
+          navigation.replace('GetStarted');
+        }
+      });
+      // navigation.replace('GetStarted');
     }, 3000);
   }, [navigation]);
   return (
