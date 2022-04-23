@@ -27,9 +27,58 @@ const UpdateProfile = ({navigation}) => {
 
   const update = () => {
     console.log('Profile: ', profile);
+
+    console.log('New Password: ', password);
+
+    if (password.length > 0) {
+      if (password.length < 6) {
+        showMessage({
+          message: 'Password kurang dari 6 karakter!',
+          type: 'default',
+          backgroundColor: colors.error,
+          color: colors.white,
+        });
+      } else {
+        //Update Password
+        updatePassword();
+        updateProfileData();
+        navigation.replace('MainApp');
+      }
+    } else {
+      //Update Profil Data
+      updateProfileData();
+      navigation.replace('MainApp');
+    }
+  };
+
+  const updatePassword = () => {
+    Fire.auth().onAuthStateChanged(user => {
+      if (user) {
+        //Update Password
+        user
+          .updatePassword(password)
+          // untuk cek sukses atau tidak menambah script ibawah ini
+          //   .then(() => {
+          //     console.log('success: ', data);
+          //     storeData('user', data);
+          //   })
+          .catch(err => {
+            showMessage({
+              message: err.message,
+              type: 'default',
+              backgroundColor: colors.error,
+              color: colors.white,
+            });
+          });
+      }
+    });
+  };
+
+  const updateProfileData = () => {
     const data = profile;
     // data.photo = profile.photo.uri;
     data.photo = photoForDB;
+
     Fire.database()
       .ref(`users/${profile.uid}/`)
       .update(data)
@@ -99,7 +148,12 @@ const UpdateProfile = ({navigation}) => {
           <Gap height={24} />
           <Input label="Email" value={profile.email} disable />
           <Gap height={24} />
-          <Input label="Password" value={password} />
+          <Input
+            label="Password"
+            value={password}
+            secureTextEntry
+            onChangeText={value => setPassword(value)}
+          />
           <Gap height={40} />
           <Button title="Save Profile" onPress={update} />
         </View>
