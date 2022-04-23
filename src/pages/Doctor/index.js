@@ -8,16 +8,12 @@ import {
   RatedDoctor,
 } from '../../components';
 import {colors, fonts, showError} from '../../utils';
-import {
-  DummyDoctor1,
-  DummyDoctor2,
-  DummyDoctor3,
-  JSONCategoryDoctor,
-} from '../../assets';
+import {DummyDoctor1, DummyDoctor2, DummyDoctor3} from '../../assets';
 import {Fire} from '../../config';
 
 const Doctor = ({navigation}) => {
   const [news, setNews] = useState([]);
+  const [categoryDoctor, setCategoryDoctor] = useState([]);
   useEffect(() => {
     Fire.database()
       .ref('news/')
@@ -26,6 +22,19 @@ const Doctor = ({navigation}) => {
         console.log('data news: ', res.val());
         if (res.val()) {
           setNews(res.val());
+        }
+      })
+      .catch(err => {
+        showError(err.message);
+      });
+
+    Fire.database()
+      .ref('category_doctor/')
+      .once('value')
+      .then(res => {
+        console.log('data Category Doctor: ', res.val());
+        if (res.val()) {
+          setCategoryDoctor(res.val());
         }
       })
       .catch(err => {
@@ -52,7 +61,7 @@ const Doctor = ({navigation}) => {
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               <View style={styles.category}>
                 <Gap width={32} />
-                {JSONCategoryDoctor.data.map(item => {
+                {categoryDoctor.map(item => {
                   return (
                     <DoctorCategory
                       key={item.id}
@@ -121,6 +130,7 @@ const styles = StyleSheet.create({
     maxWidth: 209,
     fontFamily: fonts.primary[600],
     fontSize: 20,
+    color: colors.text.primary,
   },
   category: {
     flexDirection: 'row',
