@@ -2,9 +2,9 @@ import React, {useState, useEffect} from 'react';
 import {StyleSheet, View, ScrollView} from 'react-native';
 import {ILNullPhoto} from '../../assets';
 import {Button, Gap, Header, Input, Profile} from '../../components';
-import {colors, getData, storeData} from '../../utils';
+import {colors, getData, showError, storeData} from '../../utils';
 import {Fire} from '../../config';
-import {showMessage} from 'react-native-flash-message';
+// import {showMessage} from 'react-native-flash-message';
 import {launchImageLibrary} from 'react-native-image-picker';
 
 const UpdateProfile = ({navigation}) => {
@@ -32,12 +32,13 @@ const UpdateProfile = ({navigation}) => {
 
     if (password.length > 0) {
       if (password.length < 6) {
-        showMessage({
-          message: 'Password kurang dari 6 karakter!',
-          type: 'default',
-          backgroundColor: colors.error,
-          color: colors.white,
-        });
+        // showMessage({
+        //   message: 'Password kurang dari 6 karakter!',
+        //   type: 'default',
+        //   backgroundColor: colors.error,
+        //   color: colors.white,
+        // });
+        showError('Password kurang dari 6 karakter!');
       } else {
         //Update Password
         updatePassword();
@@ -63,12 +64,13 @@ const UpdateProfile = ({navigation}) => {
           //     storeData('user', data);
           //   })
           .catch(err => {
-            showMessage({
-              message: err.message,
-              type: 'default',
-              backgroundColor: colors.error,
-              color: colors.white,
-            });
+            // showMessage({
+            //   message: err.message,
+            //   type: 'default',
+            //   backgroundColor: colors.error,
+            //   color: colors.white,
+            // });
+            showError(err.message);
           });
       }
     });
@@ -87,12 +89,13 @@ const UpdateProfile = ({navigation}) => {
         storeData('user', data);
       })
       .catch(err => {
-        showMessage({
-          message: err.message,
-          type: 'default',
-          backgroundColor: colors.error,
-          color: colors.white,
-        });
+        // showMessage({
+        //   message: err.message,
+        //   type: 'default',
+        //   backgroundColor: colors.error,
+        //   color: colors.white,
+        // });
+        showError(err.message);
       });
   };
 
@@ -109,12 +112,13 @@ const UpdateProfile = ({navigation}) => {
       response => {
         console.log('response: ', response);
         if (response.didCancel || response.error) {
-          showMessage({
-            message: 'Oops, sepertinya anda tidak memilih fotonya?',
-            type: 'default',
-            backgroundColor: colors.error,
-            color: colors.white,
-          });
+          // showMessage({
+          //   message: 'Oops, sepertinya anda tidak memilih fotonya?',
+          //   type: 'default',
+          //   backgroundColor: colors.error,
+          //   color: colors.white,
+          // });
+          showError('Oops, sepertinya anda tidak memilih fotonya?');
         } else {
           console.log('response getImage: ', response);
           const source = {uri: response.assets[0].uri};

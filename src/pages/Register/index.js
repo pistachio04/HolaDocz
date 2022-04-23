@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
-import {Button, Gap, Header, Input, Loading} from '../../components';
-import {colors, storeData, getData, useForm} from '../../utils';
+import {Button, Gap, Header, Input} from '../../components';
+import {colors, storeData, useForm, showError} from '../../utils';
 import {Fire} from '../../config';
-import {showMessage, hideMessage} from 'react-native-flash-message';
+// import {showMessage, hideMessage} from 'react-native-flash-message';
+import {useDispatch} from 'react-redux';
 
 const Register = ({navigation}) => {
   const [form, setForm] = useForm({
@@ -13,16 +14,20 @@ const Register = ({navigation}) => {
     password: '',
   });
 
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const onContinue = () => {
-    console.log(form);
+    // console.log(form);
 
-    setLoading(true);
+    // setLoading(true);
+    dispatch({type: 'SET_LOADING', value: true});
+
     Fire.auth()
       .createUserWithEmailAndPassword(form.email, form.password)
       .then(success => {
-        setLoading(false);
+        // setLoading(false);
+        dispatch({type: 'SET_LOADING', value: false});
         setForm('reset');
 
         //menyimpan ke db firebase
@@ -43,54 +48,53 @@ const Register = ({navigation}) => {
         console.log('sukses registrasi: ', success);
       })
       .catch(error => {
-        const errorMessage = error.message;
-        setLoading(false);
-        showMessage({
-          message: errorMessage,
-          type: 'default',
-          backgroundColor: colors.error,
-          color: colors.white,
-        });
-        console.log('error: ', error);
+        // const errorMessage = error.message;
+        // setLoading(false);
+        // showMessage({
+        //   message: errorMessage,
+        //   type: 'default',
+        //   backgroundColor: colors.error,
+        //   color: colors.white,
+        // });
+        // console.log('error: ', error);
+        dispatch({type: 'SET_LOADING', value: false});
+        showError(error.mesesage);
       });
   };
   return (
-    <>
-      <View style={styles.page}>
-        <Header title="Daftar Akun" onPress={() => navigation.goBack()} />
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={styles.content}>
-            <Input
-              label="Full Name"
-              value={form.fullName}
-              onChangeText={value => setForm('fullName', value)}
-            />
-            <Gap height={24} />
-            <Input
-              label="Pekerjaan"
-              value={form.profession}
-              onChangeText={value => setForm('profession', value)}
-            />
-            <Gap height={24} />
-            <Input
-              label="Email Address"
-              value={form.email}
-              onChangeText={value => setForm('email', value)}
-            />
-            <Gap height={24} />
-            <Input
-              label="Password"
-              value={form.password}
-              onChangeText={value => setForm('password', value)}
-              secureTextEntry
-            />
-            <Gap height={40} />
-            <Button title="Continue" onPress={onContinue} />
-          </View>
-        </ScrollView>
-      </View>
-      {loading && <Loading />}
-    </>
+    <View style={styles.page}>
+      <Header title="Daftar Akun" onPress={() => navigation.goBack()} />
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.content}>
+          <Input
+            label="Full Name"
+            value={form.fullName}
+            onChangeText={value => setForm('fullName', value)}
+          />
+          <Gap height={24} />
+          <Input
+            label="Pekerjaan"
+            value={form.profession}
+            onChangeText={value => setForm('profession', value)}
+          />
+          <Gap height={24} />
+          <Input
+            label="Email Address"
+            value={form.email}
+            onChangeText={value => setForm('email', value)}
+          />
+          <Gap height={24} />
+          <Input
+            label="Password"
+            value={form.password}
+            onChangeText={value => setForm('password', value)}
+            secureTextEntry
+          />
+          <Gap height={40} />
+          <Button title="Continue" onPress={onContinue} />
+        </View>
+      </ScrollView>
+    </View>
   );
 };
 

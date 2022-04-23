@@ -2,10 +2,10 @@ import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
 import {Button, Gap, Header, Link} from '../../components';
 import {IconAddPhoto, IconRemovePhoto, ILNullPhoto} from '../../assets';
-import {colors, fonts, storeData} from '../../utils';
+import {colors, fonts, showError, storeData} from '../../utils';
 //import {NavigationContainer} from '@react-navigation/native';
 import {launchImageLibrary} from 'react-native-image-picker';
-import {showMessage} from 'react-native-flash-message';
+// import {showMessage} from 'react-native-flash-message';
 import {Fire} from '../../config';
 
 const UploadPhoto = ({navigation, route}) => {
@@ -13,18 +13,20 @@ const UploadPhoto = ({navigation, route}) => {
   const [photoForDB, setPhotoForDB] = useState('');
   const [hasPhoto, setHasPhoto] = useState(false);
   const [photo, setPhoto] = useState(ILNullPhoto);
+
   const getImage = () => {
     launchImageLibrary(
       {quality: 0.5, maxWidth: 200, maxHeight: 200, includeBase64: true},
       response => {
         console.log('response: ', response);
         if (response.didCancel || response.error) {
-          showMessage({
-            message: 'Oops, sepertinya anda tidak memilih fotonya?',
-            type: 'default',
-            backgroundColor: colors.error,
-            color: colors.white,
-          });
+          // showMessage({
+          //   message: 'Oops, sepertinya anda tidak memilih fotonya?',
+          //   type: 'default',
+          //   backgroundColor: colors.error,
+          //   color: colors.white,
+          // });
+          showError('Oops, sepertinya anda tidak memilih fotonya?');
         } else {
           console.log('response getImage: ', response);
           const source = {uri: response.assets[0].uri};
