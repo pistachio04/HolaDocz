@@ -40,5 +40,6 @@ const styles = StyleSheet.create({
     fontFamily: fonts.primary[600],
     fontSize: 20,
     color: type === 'dark' ? colors.white : colors.text.primary,
+    textTransform: 'capitalize',
   }),
 });

@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     width: 100,
   },
   illustration: {
-    marginBottom: 28,
+    marginBottom: 18,
   },
   label: {
     fontSize: 12,
@@ -52,5 +52,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: fonts.primary[600],
     color: colors.text.primary,
+    textTransform: 'capitalize',
   },
 });

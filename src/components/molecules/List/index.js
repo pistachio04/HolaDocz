@@ -53,11 +53,13 @@ const styles = StyleSheet.create({
     fontFamily: fonts.primary[600],
     fontSize: 16,
     color: colors.text.primary,
+    textTransform: 'capitalize',
   },
   desc: {
     fontFamily: fonts.primary[300],
     fontSize: 12,
     color: colors.text.secondary,
+    textTransform: 'capitalize',
   },
   content: {
     flex: 1,
