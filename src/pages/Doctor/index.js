@@ -14,20 +14,47 @@ import {Fire} from '../../config';
 const Doctor = ({navigation}) => {
   const [news, setNews] = useState([]);
   const [categoryDoctor, setCategoryDoctor] = useState([]);
+  const [doctors, setDoctors] = useState([]);
+
   useEffect(() => {
+    getCategoryDoctor();
+    getTopRatedDoctors();
+    getNews();
+  }, []);
+  // useEffect(() => {
+  //   getData('user').then(res => {
+  //     console.log('data user: ', res);
+  //   });
+  // }, []);
+
+  const getTopRatedDoctors = () => {
     Fire.database()
-      .ref('news/')
+      .ref('doctors/')
+      .orderByChild('rate')
+      .limitToLast(3)
       .once('value')
       .then(res => {
-        console.log('data news: ', res.val());
+        // console.log('data TopRated Doctor: ', res.val());
         if (res.val()) {
-          setNews(res.val());
+          //merubah object ke array pada data doctors
+          const oldData = res.val();
+          const data = [];
+          Object.keys(oldData).map(key => {
+            data.push({
+              id: key,
+              data: oldData[key],
+            });
+          });
+          console.log('data hasil parse: ', data);
+          setDoctors(data);
         }
       })
       .catch(err => {
         showError(err.message);
       });
+  };
 
+  const getCategoryDoctor = () => {
     Fire.database()
       .ref('category_doctor/')
       .once('value')
@@ -40,12 +67,21 @@ const Doctor = ({navigation}) => {
       .catch(err => {
         showError(err.message);
       });
-  }, []);
-  // useEffect(() => {
-  //   getData('user').then(res => {
-  //     console.log('data user: ', res);
-  //   });
-  // }, []);
+  };
+  const getNews = () => {
+    Fire.database()
+      .ref('news/')
+      .once('value')
+      .then(res => {
+        console.log('data news: ', res.val());
+        if (res.val()) {
+          setNews(res.val());
+        }
+      })
+      .catch(err => {
+        showError(err.message);
+      });
+  };
   return (
     <View style={styles.page}>
       <View style={styles.content}>
@@ -76,22 +112,17 @@ const Doctor = ({navigation}) => {
           </View>
           <View style={styles.wrapperContent}>
             <Text style={styles.sectionLabel}>Top Rated Doctor</Text>
-            <RatedDoctor
-              avatar={DummyDoctor1}
-              name="Raani"
-              desc="Dokter Anak"
-              onPress={() => navigation.navigate('DoctorProfile')}
-            />
-            <RatedDoctor
-              avatar={DummyDoctor2}
-              name="Prasetyo"
-              desc="Dokter Pediatrik"
-            />
-            <RatedDoctor
-              avatar={DummyDoctor3}
-              name="Raani"
-              desc="Dokter Anak"
-            />
+            {doctors.map(doctor => {
+              return (
+                <RatedDoctor
+                  key={doctor.id}
+                  avatar={{uri: doctor.data.photo}}
+                  name={doctor.data.fullName}
+                  desc={doctor.data.profession}
+                  onPress={() => navigation.navigate('DoctorProfile')}
+                />
+              );
+            })}
             <Text style={styles.sectionLabel}>Good News</Text>
           </View>
           {news.map(item => {
