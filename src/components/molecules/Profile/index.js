@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
     color: colors.text.primary,
     marginTop: 16,
     textAlign: 'center',
+    textTransform: 'capitalize',
   },
   proffesion: {
     fontFamily: fonts.primary[400],
@@ -56,5 +57,6 @@ const styles = StyleSheet.create({
     color: colors.text.secondary,
     marginTop: 2,
     textAlign: 'center',
+    textTransform: 'capitalize',
   },
 });

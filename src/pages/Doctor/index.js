@@ -8,7 +8,7 @@ import {
   RatedDoctor,
 } from '../../components';
 import {colors, fonts, showError} from '../../utils';
-import {DummyDoctor1, DummyDoctor2, DummyDoctor3} from '../../assets';
+// import {DummyDoctor1, DummyDoctor2, DummyDoctor3} from '../../assets';
 import {Fire} from '../../config';
 
 const Doctor = ({navigation}) => {
@@ -119,7 +119,7 @@ const Doctor = ({navigation}) => {
                   avatar={{uri: doctor.data.photo}}
                   name={doctor.data.fullName}
                   desc={doctor.data.profession}
-                  onPress={() => navigation.navigate('DoctorProfile')}
+                  onPress={() => navigation.navigate('DoctorProfile', doctor)}
                 />
               );
             })}
