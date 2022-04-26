@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {DummyDoctor1} from '../../assets';
+// import {DummyDoctor1} from '../../assets';
 import {Header, List} from '../../components';
 import {Fire} from '../../config';
 import {colors} from '../../utils';
@@ -10,7 +10,7 @@ const ChooseDoctor = ({navigation, route}) => {
   const itemCategory = route.params;
   useEffect(() => {
     callDoctorByCategory(itemCategory.category);
-  }, []);
+  }, [itemCategory.category]);
 
   const callDoctorByCategory = category => {
     Fire.database()
@@ -50,7 +50,7 @@ const ChooseDoctor = ({navigation, route}) => {
             profile={{uri: doctor.data.photo}}
             name={doctor.data.fullName}
             desc={doctor.data.gender}
-            onPress={() => navigation.navigate('Chatting')}
+            onPress={() => navigation.navigate('DoctorProfile', doctor)}
           />
         );
       })}

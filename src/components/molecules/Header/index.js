@@ -4,9 +4,11 @@ import {colors, fonts} from '../../../utils';
 import {Button, Gap} from '../../atoms';
 import DarkProfiles from './DarkProfiles';
 
-const Header = ({title, onPress, type}) => {
+const Header = ({title, onPress, type, photo, desc}) => {
   if (type === 'dark-profile') {
-    return <DarkProfiles onPress={onPress} />;
+    return (
+      <DarkProfiles onPress={onPress} title={title} desc={desc} photo={photo} />
+    );
   }
   return (
     <View style={styles.container(type)}>
