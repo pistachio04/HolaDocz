@@ -3,9 +3,9 @@ import {StyleSheet} from 'react-native';
 import IsMe from './IsMe';
 import Other from './Other';
 
-const ChatItem = ({isMe}) => {
+const ChatItem = ({isMe, date, text}) => {
   if (isMe) {
-    return <IsMe />;
+    return <IsMe text={text} date={date} />;
   }
   return <Other />;
 };
