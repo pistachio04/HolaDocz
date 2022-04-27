@@ -11,26 +11,38 @@ const Messages = ({navigation}) => {
 
   useEffect(() => {
     getDataUserFromLocal();
+    const rootDB = Fire.database().ref();
     const urlHistory = `messages/${user.uid}/`;
+    const messagesDB = rootDB.child(urlHistory);
 
-    Fire.database()
-      .ref(urlHistory)
-      .on('value', snapshot => {
-        // console.log('Data History: ', snapshot.val());
-        if (snapshot.val()) {
-          const oldData = snapshot.val();
-          const data = [];
-          Object.keys(oldData).map(key => {
-            data.push({
-              id: key,
-              ...oldData[key],
-              // data: oldData[key],
-            });
+    // Fire.database()
+    //   .ref(urlHistory)
+    messagesDB.on('value', async snapshot => {
+      // console.log('Data History: ', snapshot.val());
+      if (snapshot.val()) {
+        const oldData = snapshot.val();
+        const data = [];
+
+        const promises = await Object.keys(oldData).map(async key => {
+          //mengambil data detail doctor
+          const urlUidDoctor = `doctors/${oldData[key].uidPartner}`;
+          const detailDoctor = await rootDB.child(urlUidDoctor).once('value');
+          console.log('Detail Doctor: ', detailDoctor.val());
+
+          data.push({
+            id: key,
+            detailDoctor: detailDoctor.val(),
+            ...oldData[key],
+            // data: oldData[key],
           });
-          console.log('New Data Histoy: ', data);
-          setHistoryChat(data);
-        }
-      });
+        });
+
+        await Promise.all(promises);
+
+        console.log('New Data Histoy: ', data);
+        setHistoryChat(data);
+      }
+    });
   }, [user.uid]);
 
   //Pemanggilan ke local storage
@@ -48,8 +60,8 @@ const Messages = ({navigation}) => {
           return (
             <List
               key={chat.id}
-              profile={chat.uidPartner}
-              name={chat.uidPartner}
+              profile={{uri: chat.detailDoctor.photo}}
+              name={chat.detailDoctor.fullName}
               desc={chat.lastContentChat}
               onPress={() => navigation.navigate('Chatting')}
             />
