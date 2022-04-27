@@ -73,6 +73,18 @@ const Chatting = ({navigation, route}) => {
 
     const chatID = `${user.uid}_${dataDoctor.data.uid}`;
     const urlFirebase = `chatting/${chatID}/allChat/${setDateChat(today)}`;
+    const urlMessageUser = `messages/${user.uid}/${chatID}`;
+    const urlMessageDoctor = `messages/${dataDoctor.data.uid}/${chatID}`;
+    const dataHistoryChatForUser = {
+      lastContentChat: chatContent,
+      lastChatDate: today.getTime(),
+      uidPartner: dataDoctor.data.uid,
+    };
+    const dataHistoryChatForDoctor = {
+      lastContentChat: chatContent,
+      lastChatDate: today.getTime(),
+      uidPartner: user.uid,
+    };
     // console.log('Data dikirim: ', data);
     // console.log('url Firebase: ', urlFirebase);
     setChatContent('');
@@ -83,6 +95,10 @@ const Chatting = ({navigation, route}) => {
       .push(data)
       .then(() => {
         setChatContent('');
+        //menyimpan history chat for User
+        Fire.database().ref(urlMessageUser).set(dataHistoryChatForUser);
+        //menyimpan history chat for Doctor
+        Fire.database().ref(urlMessageDoctor).set(dataHistoryChatForDoctor);
       })
       .catch(err => {
         showError(err.message);
@@ -105,12 +121,14 @@ const Chatting = ({navigation, route}) => {
               <View key={chat.id}>
                 <Text style={styles.chatDate}>{chat.id}</Text>
                 {chat.data.map(itemChat => {
+                  const isMe = itemChat.data.sendBy === user.uid;
                   return (
                     <ChatItem
                       key={itemChat.id}
-                      isMe={itemChat.data.sendBy === user.uid}
+                      isMe={isMe}
                       text={itemChat.data.chatContent}
                       date={itemChat.data.chatTime}
+                      photo={isMe ? null : {uri: dataDoctor.data.photo}}
                     />
                   );
                 })}
